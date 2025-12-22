@@ -1,111 +1,159 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import Button from './components/Button';
-import ProductCard from './components/ProductCard';
+import ProductCarousel from './components/ProductCarousel';
+
+// 1. IMPORT IS CORRECT HERE
+import heroBg from './images/pexels-thishanabee-3993398.jpg';
 
 function App() {
   // Placeholder data for demonstration
-  const featuredProducts = Array(4).fill(null);
+  const featuredProducts = Array(8).fill(null).map((_, i) => ({
+    image: `https://picsum.photos/seed/product${i}/400/500`,
+    brand: 'Trending Brand',
+    name: `Stylish Product ${i + 1}`,
+    price: `${(Math.random() * 5000 + 1500).toFixed(0)}`
+  }));
+
+  const newArrivals = Array(8).fill(null).map((_, i) => ({
+    image: `https://picsum.photos/seed/new${i}/400/500`,
+    brand: 'New In',
+    name: `New Arrival ${i + 1}`,
+    price: `${(Math.random() * 5000 + 1500).toFixed(0)}`
+  }));
 
   return (
     <div className="min-h-screen">
       <Navbar />
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-gray-50 to-white">
-        <div className="container mx-auto px-4 py-16 md:py-24 text-center">
-          <h1 className="text-4xl md:text-6xl font-extrabold mb-4 tracking-tight">
-            Dubai's Finest, <span className="text-brand-yellow">Delivered to Pakistan</span>
+      {/* Special Offers Banner */}
+      <div className="bg-brand-yellow text-black text-center py-2 text-sm font-semibold">
+        🎉 Free Shipping on Orders Over PKR 3000! Use Code: FLYSHOP
+      </div>
+
+      {/* Enhanced Hero Section with Background Image */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        
+        {/* 2. FIXED: Added src={heroBg} here */}
+        <img 
+          src={heroBg}
+          alt="Hero Background" 
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        
+        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div className="relative z-10 text-center text-white px-4">
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight">
+            Dubai's Finest.
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Discover curated, unisex and girlish products with a touch of modern street style. Shop the latest trends from Dubai, now at your doorstep.
+          <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto font-light">
+            Discover curated trends, now at your doorstep.
           </p>
-          <Button variant="primary">Shop New Arrivals</Button>
+          <div className="space-x-4">
+            <Button variant="primary" className="bg-white text-black hover:bg-gray-200">Shop New Arrivals</Button>
+            <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black">View Lookbook</Button>
+          </div>
         </div>
       </section>
 
-      {/* Featured Brands Section */}
+      {/* Interactive Category Banners */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-10">Featured Brands</h2>
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            {/* Replace with actual brand logos */}
-            <div className="w-32 h-12 bg-gray-200 rounded"></div>
-            <div className="w-32 h-12 bg-gray-200 rounded"></div>
-            <div className="w-32 h-12 bg-gray-200 rounded"></div>
-            <div className="w-32 h-12 bg-gray-200 rounded"></div>
-          </div>
-        </div>
-      </section>
-
-      {/* Shop by Categories Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-10">Shop by Categories</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="relative group overflow-hidden rounded-lg cursor-pointer">
-              <img src="https://placehold.co/400x500/FAD114/000000?text=Accessories" alt="Accessories" className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <p className="text-white font-semibold text-lg">Accessories</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="relative group overflow-hidden rounded-lg cursor-pointer h-96">
+              <img src="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Girlish Collection" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
+                <div className="text-white">
+                  <p className="text-sm uppercase tracking-widest mb-2">The Edit</p>
+                  <h3 className="text-3xl font-bold mb-2">Girlish Collection</h3>
+                  <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black">Shop Now</Button>
+                </div>
               </div>
             </div>
-            <div className="relative group overflow-hidden rounded-lg cursor-pointer">
-              <img src="https://placehold.co/400x500/E5E7EB/000000?text=Apparel" alt="Apparel" className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <p className="text-white font-semibold text-lg">Apparel</p>
-              </div>
-            </div>
-            <div className="relative group overflow-hidden rounded-lg cursor-pointer">
-              <img src="https://placehold.co/400x500/FAD114/000000?text=Footwear" alt="Footwear" className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <p className="text-white font-semibold text-lg">Footwear</p>
-              </div>
-            </div>
-            <div className="relative group overflow-hidden rounded-lg cursor-pointer">
-              <img src="https://placehold.co/400x500/E5E7EB/000000?text=Lifestyle" alt="Lifestyle" className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <p className="text-white font-semibold text-lg">Lifestyle</p>
+            <div className="relative group overflow-hidden rounded-lg cursor-pointer h-96">
+              <img src="https://images.pexels.com/photos/428338/pexels-photo-428338.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Unisex Streetwear" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
+                <div className="text-white">
+                  <p className="text-sm uppercase tracking-widest mb-2">Trending Now</p>
+                  <h3 className="text-3xl font-bold mb-2">Unisex Streetwear</h3>
+                  <Button variant="outline" className="border-white text-white hover:bg-white hover:text-black">Shop Now</Button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Featured Products Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-10">Featured Products</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {featuredProducts.map((_, index) => (
-              <ProductCard key={index} />
-            ))}
-          </div>
-          <div className="text-center mt-10">
-            <Button variant="outline">View All Products</Button>
-          </div>
-        </div>
-      </section>
+      {/* Featured Products Carousel */}
+      <ProductCarousel products={featuredProducts} title="Featured Products" />
 
-      {/* Instagram Feed Placeholder */}
+      {/* "Shop the Look" Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Follow Us on Instagram</h2>
-          <p className="text-gray-600 mb-8">@shopstreetpk</p>
-          {/* Here you would integrate an Instagram feed widget */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-            <img src="https://placehold.co/300x300" alt="Instagram" className="w-full h-full object-cover" />
-            <img src="https://placehold.co/300x300" alt="Instagram" className="w-full h-full object-cover" />
-            <img src="https://placehold.co/300x300" alt="Instagram" className="w-full h-full object-cover" />
-            <img src="https://placehold.co/300x300" alt="Instagram" className="w-full h-full object-cover" />
+          <h2 className="text-3xl font-bold mb-4">Shop The Look</h2>
+          <p className="text-gray-600 mb-8">Get inspired by our curated styles</p>
+          <div className="relative max-w-4xl mx-auto">
+            <img src="https://images.pexels.com/photos/1082528/pexels-photo-1082528.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Shop the Look" className="w-full h-auto rounded-lg shadow-2xl" />
           </div>
+        </div>
+      </section>
+
+      {/* New Arrivals Carousel */}
+      <ProductCarousel products={newArrivals} title="Just Dropped" />
+
+      {/* Instagram Feed Section */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold mb-4">As Seen on Instagram</h2>
+          <p className="text-gray-600 mb-8">@shopstreetpk</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {[1, 2, 3, 4].map((item) => (
+              <div key={item} className="relative group">
+                <img src={`https://picsum.photos/seed/insta${item}/400/400`} alt="Instagram" className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <span className="text-white font-semibold">View Post</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <Button variant="outline" className="mt-8">Follow Us on Instagram</Button>
         </div>
       </section>
       
-      {/* Simple Footer Placeholder */}
-      <footer className="bg-black text-white py-8 text-center">
-        <p>&copy; {new Date().getFullYear()} Shop Street PK. All Rights Reserved.</p>
+      {/* Enhanced Footer */}
+      <footer className="bg-black text-white py-12">
+        <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <h4 className="font-bold mb-4">Shop Street PK</h4>
+            <p className="text-sm text-gray-400">Bringing Dubai's finest fashion to Pakistan.</p>
+          </div>
+          <div>
+            <h4 className="font-bold mb-4">Quick Links</h4>
+            <ul className="text-sm text-gray-400 space-y-2">
+              <li><a href="#" className="hover:text-white">About Us</a></li>
+              <li><a href="#" className="hover:text-white">Contact Us</a></li>
+              <li><a href="#" className="hover:text-white">Shipping Policy</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold mb-4">Categories</h4>
+            <ul className="text-sm text-gray-400 space-y-2">
+              <li><a href="#" className="hover:text-white">New Arrivals</a></li>
+              <li><a href="#" className="hover:text-white">Best Sellers</a></li>
+              <li><a href="#" className="hover:text-white">Sale</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-bold mb-4">Newsletter</h4>
+            <p className="text-sm text-gray-400 mb-4">Subscribe to get special offers and updates</p>
+            <input type="email" placeholder="Your email" className="w-full p-2 rounded text-black" />
+            <Button variant="primary" className="w-full mt-2">Subscribe</Button>
+          </div>
+        </div>
+        <div className="text-center text-sm text-gray-500 mt-8 pt-8 border-t border-gray-800">
+          &copy; {new Date().getFullYear()} Shop Street PK. All Rights Reserved.
+        </div>
       </footer>
-
     </div>
   );
 }
