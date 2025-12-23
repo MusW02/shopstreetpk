@@ -1,29 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag } from 'lucide-react';
 import CartItem from '../components/CartItem';
 import Button from '../components/Button';
+import { useCart } from '../context/CartContext'; // ADD THIS
 
 const CartPage = () => {
-  // Placeholder cart data
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: 'Stylish Urban Jacket', brand: 'Urban Threads', price: 4500, quantity: 1, image: 'https://picsum.photos/seed/jacket/150/150' },
-    { id: 2, name: 'Minimalist Watch', brand: 'Timeless Co.', price: 7500, quantity: 1, image: 'https://picsum.photos/seed/watch/150/150' },
-    { id: 3, name: 'Chic Crossbody Bag', brand: 'Girlish', price: 3200, quantity: 2, image: 'https://picsum.photos/seed/bag/150/150' },
-  ]);
+  const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart(); // USE REAL DATA
 
-  const handleRemoveItem = (itemId) => {
-    setCartItems(cartItems.filter(item => item.id !== itemId));
-  };
-
-  const handleQuantityChange = (itemId, newQuantity) => {
-    if (newQuantity < 1) return;
-    setCartItems(cartItems.map(item => 
-      item.id === itemId ? { ...item, quantity: newQuantity } : item
-    ));
-  };
-
-  const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = cartTotal;
   const shipping = subtotal > 3000 ? 0 : 150;
   const total = subtotal + shipping;
 
@@ -53,8 +38,8 @@ const CartPage = () => {
               <CartItem 
                 key={item.id} 
                 item={item} 
-                onRemove={handleRemoveItem}
-                onQuantityChange={handleQuantityChange}
+                onRemove={removeFromCart}
+                onQuantityChange={updateQuantity}
               />
             ))}
             <div className="mt-6 text-right">

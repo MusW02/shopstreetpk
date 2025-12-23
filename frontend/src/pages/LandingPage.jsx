@@ -6,18 +6,20 @@ import ProductCarousel from '../components/ProductCarousel';
 
 function LandingPage() {
   // Placeholder data for demonstration
-  const featuredProducts = Array(8).fill(null).map((_, i) => ({
+    const featuredProducts = Array(8).fill(null).map((_, i) => ({
+    id: `featured-${i}`, // ADD UNIQUE ID
     image: `https://picsum.photos/seed/product${i}/400/500`,
     brand: 'Trending Brand',
     name: `Stylish Product ${i + 1}`,
-    price: `${(Math.random() * 5000 + 1500).toFixed(0)}`
+    price: parseInt((Math.random() * 5000 + 1500).toFixed(0)) // Make sure it's a number
   }));
 
   const newArrivals = Array(8).fill(null).map((_, i) => ({
+    id: `new-${i}`, // ADD UNIQUE ID
     image: `https://picsum.photos/seed/new${i}/400/500`,
     brand: 'New In',
     name: `New Arrival ${i + 1}`,
-    price: `${(Math.random() * 5000 + 1500).toFixed(0)}`
+    price: parseInt((Math.random() * 5000 + 1500).toFixed(0)) // Make sure it's a number
   }));
 
   return (

@@ -3,17 +3,13 @@ import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import Button from '../components/Button';
 import OrderSummary from '../components/checkout/OrderSummary';
 import ShippingForm from '../components/checkout/ShippingForm';
+import { useCart } from '../context/CartContext'; 
 
 const CheckoutPage = () => {
+  const { cartItems } = useCart();
   const [step, setStep] = useState(1);
   const [shippingData, setShippingData] = useState({});
   const [paymentData, setPaymentData] = useState({});
-
-  // Placeholder cart data
-  const cartItems = [
-    { id: 1, name: 'Stylish Product 1', price: 3500, quantity: 1, image: 'https://picsum.photos/seed/prod1/100/100' },
-    { id: 2, name: 'Trending Accessory', price: 1500, quantity: 2, image: 'https://picsum.photos/seed/prod2/100/100' },
-  ];
 
   const steps = ['Shipping', 'Payment', 'Review'];
 
