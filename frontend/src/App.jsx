@@ -8,6 +8,7 @@ import CategoriesPage from './pages/CategoriesPage'; // To be created
 import CheckoutPage from './pages/CheckoutPage'; // To be created
 import ContactPage from './pages/ContactPage'; // To be created
 import CartPage from './pages/CartPage'; // 1. Import CartPage
+import ProductDetailsPage from './pages/ProductDetailsPage';
 
 // A simple layout component that includes the navbar and footer
 const PageLayout = ({ children }) => (
@@ -27,6 +28,7 @@ function App() {
         <Route path="/contact" element={<PageLayout><ContactPage /></PageLayout>} />
         <Route path="/cart" element={<PageLayout><CartPage /></PageLayout>} /> {/* 2. Add the route */}
         <Route path="/checkout" element={<PageLayout><CheckoutPage /></PageLayout>} />
+        <Route path="/products/:id" element={<PageLayout><ProductDetailsPage /></PageLayout>} />
       </Routes>
     </div>
   );

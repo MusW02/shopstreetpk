@@ -1,22 +1,28 @@
 import React from 'react';
 import { Heart, ShoppingBag } from 'lucide-react';
-import { useCart } from '../context/CartContext'; // ADD THIS
+import { useDispatch } from 'react-redux'; // Redux Hook
+import { addToCart } from '../features/cart/cartSlice'; // Redux Action
+import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const ProductCard = ({ product }) => {
-  const { addToCart } = useCart(); // ADD THIS
+  const dispatch = useDispatch();
 
   if (!product) {
     return null;
   }
 
   const handleAddToCart = (e) => {
-    e.preventDefault(); // Prevent any parent link clicks
-    addToCart(product);
+    e.preventDefault(); 
+    // Dispatch action to Redux store
+    // Defaulting to "One Size" for quick-add from grid
+    dispatch(addToCart({ ...product, selectedSize: 'One Size' }));
+    toast.success(`${product.name} added to cart!`);
   };
 
   return (
     <div className="group bg-white border border-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300">
-      <div className="relative overflow-hidden bg-gray-50">
+      <Link to={`/products/${product.id}`} className="relative overflow-hidden bg-gray-50 block">
         <img 
           src={product?.image || 'https://placehold.co/300x400'} 
           alt={product?.name || 'Product'} 
@@ -25,18 +31,20 @@ const ProductCard = ({ product }) => {
         <button className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <Heart size={18} />
         </button>
-      </div>
+      </Link>
+      
       <div className="p-4">
         <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
           {product?.brand}
         </p>
-        <h3 className="font-medium text-gray-900 mb-2 group-hover:text-brand-yellow transition-colors">
-          {product?.name}
-        </h3>
-        {/* UPDATED: Add flex layout for price and button */}
+        <Link to={`/products/${product.id}`}>
+          <h3 className="font-medium text-gray-900 mb-2 group-hover:text-brand-yellow transition-colors">
+            {product?.name}
+          </h3>
+        </Link>
+        
         <div className="flex items-center justify-between">
           <p className="font-semibold text-lg">PKR {product?.price}</p>
-          {/* ADD TO CART BUTTON */}
           <button
             onClick={handleAddToCart}
             className="p-2 bg-brand-yellow rounded-full hover:bg-yellow-400 transition-all hover:scale-110"

@@ -3,14 +3,35 @@ import { Link } from 'react-router-dom';
 import { ShoppingBag } from 'lucide-react';
 import CartItem from '../components/CartItem';
 import Button from '../components/Button';
-import { useCart } from '../context/CartContext'; // ADD THIS
+// Redux Imports
+import { useSelector, useDispatch } from 'react-redux';
+import { removeFromCart, addToCart, decreaseQuantity } from '../features/cart/cartSlice';
 
 const CartPage = () => {
-  const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart(); // USE REAL DATA
+  const dispatch = useDispatch();
+  
+  // Get Real Data from Redux
+  const { cartItems, totalAmount } = useSelector((state) => state.cart);
 
-  const subtotal = cartTotal;
+  const subtotal = totalAmount;
   const shipping = subtotal > 3000 ? 0 : 150;
   const total = subtotal + shipping;
+
+  // Handlers for CartItem interactions
+  const handleRemove = (id, selectedSize) => {
+    dispatch(removeFromCart({ id, selectedSize }));
+  };
+
+  const handleQuantityChange = (id, currentQty, targetQty, selectedSize) => {
+    if (targetQty > currentQty) {
+      // Increasing: find the item and add it again
+      const item = cartItems.find(i => i.id === id && i.selectedSize === selectedSize);
+      if (item) dispatch(addToCart(item));
+    } else {
+      // Decreasing
+      dispatch(decreaseQuantity({ id, selectedSize }));
+    }
+  };
 
   if (cartItems.length === 0) {
     return (
@@ -34,12 +55,13 @@ const CartPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow-sm">
-            {cartItems.map(item => (
+            {cartItems.map((item, index) => (
               <CartItem 
-                key={item.id} 
+                // key needs to be unique (id + size)
+                key={`${item.id}-${item.selectedSize}-${index}`} 
                 item={item} 
-                onRemove={removeFromCart}
-                onQuantityChange={updateQuantity}
+                onRemove={() => handleRemove(item.id, item.selectedSize)}
+                onQuantityChange={(id, qty) => handleQuantityChange(id, item.quantity, qty, item.selectedSize)}
               />
             ))}
             <div className="mt-6 text-right">

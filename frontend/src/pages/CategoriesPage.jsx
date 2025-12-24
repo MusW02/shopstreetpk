@@ -1,58 +1,23 @@
-import React from 'react';
+// src/pages/CategoriesPage.jsx
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCategories } from '../features/categories/categoriesSlice';
 import CategoryCard from '../components/CategoryCard';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const CategoriesPage = () => {
-  // Placeholder data for categories
-  const categories = [
-    {
-      name: 'Apparel',
-      slug: 'apparel',
-      image: 'https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      productCount: 156
-    },
-    {
-      name: 'Accessories',
-      slug: 'accessories',
-      image: 'https://images.pexels.com/photos/934066/pexels-photo-934066.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      productCount: 89
-    },
-    {
-      name: 'Footwear',
-      slug: 'footwear',
-      image: 'https://images.pexels.com/photos/1598505/pexels-photo-1598505.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      productCount: 74
-    },
-    {
-      name: 'Bags & Wallets',
-      slug: 'bags-wallets',
-      image: 'https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      productCount: 62
-    },
-    {
-      name: 'Beauty',
-      slug: 'beauty',
-      image: 'https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      productCount: 203
-    },
-    {
-      name: 'Lifestyle',
-      slug: 'lifestyle',
-      image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      productCount: 45
-    },
-    {
-      name: 'Jewelry',
-      slug: 'jewelry',
-      image: 'https://images.pexels.com/photos/1647262/pexels-photo-1647262.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      productCount: 98
-    },
-    {
-      name: 'Gadgets',
-      slug: 'gadgets',
-      image: 'https://images.pexels.com/photos/7974/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-      productCount: 31
-    },
-  ];
+  const dispatch = useDispatch();
+
+  // Select the categories data and status from the Redux store
+  const { items: categories, status } = useSelector((state) => state.categories);
+
+  // useEffect will run once when the component mounts to fetch categories
+  useEffect(() => {
+    // Only fetch categories if the status is 'idle' (initial state)
+    if (status === 'idle') {
+      dispatch(getCategories());
+    }
+  }, [status, dispatch]);
 
   return (
     <div className="bg-gray-50">
@@ -66,11 +31,19 @@ const CategoriesPage = () => {
         </div>
 
         {/* Categories Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {categories.map((category) => (
-            <CategoryCard key={category.slug} category={category} />
-          ))}
-        </div>
+        {status === 'loading' ? (
+          <LoadingSpinner size="lg" />
+        ) : status === 'succeeded' ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {categories.map((category) => (
+              <CategoryCard key={category.slug} category={category} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-red-500 text-lg">Error loading categories.</p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -3,10 +3,13 @@ import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 import Button from '../components/Button';
 import OrderSummary from '../components/checkout/OrderSummary';
 import ShippingForm from '../components/checkout/ShippingForm';
-import { useCart } from '../context/CartContext'; 
+// Redux Import
+import { useSelector } from 'react-redux';
 
 const CheckoutPage = () => {
-  const { cartItems } = useCart();
+  // Get Cart from Redux
+  const { cartItems } = useSelector((state) => state.cart);
+  
   const [step, setStep] = useState(1);
   const [shippingData, setShippingData] = useState({});
   const [paymentData, setPaymentData] = useState({});
@@ -58,6 +61,18 @@ const CheckoutPage = () => {
         return (
           <div className="space-y-6">
             <h2 className="text-2xl font-bold mb-6">Review Your Order</h2>
+            
+            {/* Added Cart Summary to Review Step */}
+            <div className="bg-white border border-gray-200 rounded-lg p-4 mb-4">
+                <h3 className="font-semibold mb-3">Items ({cartItems.length})</h3>
+                {cartItems.map((item, idx) => (
+                <div key={`${item.id}-${idx}`} className="flex justify-between text-sm py-1 border-b border-gray-50 last:border-0">
+                    <span className="text-gray-600">{item.quantity}x {item.name} <span className="text-xs bg-gray-100 px-1 rounded ml-2">{item.selectedSize}</span></span>
+                    <span className="font-medium">PKR {item.price * item.quantity}</span>
+                </div>
+                ))}
+            </div>
+
             <div className="bg-gray-50 p-6 rounded-lg space-y-4">
               <div>
                 <h3 className="font-semibold mb-2">Shipping Address</h3>

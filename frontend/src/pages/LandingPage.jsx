@@ -1,26 +1,27 @@
 // src/pages/LandingPage.jsx
-
-import React from 'react';
-import Button from '../components/Button';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getProducts } from '../features/products/productsSlice';
 import ProductCarousel from '../components/ProductCarousel';
+import LoadingSpinner from '../components/LoadingSpinner';
+import Button from '../components/Button';
 
 function LandingPage() {
-  // Placeholder data for demonstration
-    const featuredProducts = Array(8).fill(null).map((_, i) => ({
-    id: `featured-${i}`, // ADD UNIQUE ID
-    image: `https://picsum.photos/seed/product${i}/400/500`,
-    brand: 'Trending Brand',
-    name: `Stylish Product ${i + 1}`,
-    price: parseInt((Math.random() * 5000 + 1500).toFixed(0)) // Make sure it's a number
-  }));
+  const dispatch = useDispatch();
 
-  const newArrivals = Array(8).fill(null).map((_, i) => ({
-    id: `new-${i}`, // ADD UNIQUE ID
-    image: `https://picsum.photos/seed/new${i}/400/500`,
-    brand: 'New In',
-    name: `New Arrival ${i + 1}`,
-    price: parseInt((Math.random() * 5000 + 1500).toFixed(0)) // Make sure it's a number
-  }));
+  // Select the products data and status from the Redux store
+  const { items: products, status } = useSelector((state) => state.products);
+
+  // useEffect will run once when the component mounts
+  useEffect(() => {
+    // Only fetch products if the status is 'idle' (initial state)
+    if (status === 'idle') {
+      dispatch(getProducts());
+    }
+  }, [status, dispatch]); // Dependency array ensures this runs only when needed
+
+  // We will use the same products array for both carousels for this demo
+  const newArrivals = products.slice(0, 4); // Take first 4 products
 
   return (
     <>
@@ -29,7 +30,7 @@ function LandingPage() {
         🎉 Free Shipping on Orders Over PKR 3000! Use Code: FLYSHOP
       </div>
 
-      {/* Enhanced Hero Section with Background Image */}
+      {/* Enhanced Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         <img 
           src="https://images.pexels.com/photos/945471/pexels-photo-945471.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" 
@@ -55,7 +56,8 @@ function LandingPage() {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="relative group overflow-hidden rounded-lg cursor-pointer h-96">
+            {/* ... (This section remains the same) ... */}
+             <div className="relative group overflow-hidden rounded-lg cursor-pointer h-96">
               <img src="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Girlish Collection" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
                 <div className="text-white">
@@ -79,11 +81,23 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* Featured Products Carousel */}
-      <ProductCarousel products={featuredProducts} title="Featured Products" />
+      {/* Featured Products Carousel - Now using real data */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10">Featured Products</h2>
+          {status === 'loading' ? (
+            <LoadingSpinner size="lg" />
+          ) : status === 'succeeded' ? (
+            <ProductCarousel products={products} title="" /> /* Title is empty since we have it above */
+          ) : (
+            <p className="text-center text-red-500">Error loading products.</p>
+          )}
+        </div>
+      </section>
 
       {/* "Shop the Look" Section */}
       <section className="py-16 bg-gray-50">
+        {/* ... (This section remains the same) ... */}
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Shop The Look</h2>
           <p className="text-gray-600 mb-8">Get inspired by our curated styles</p>
@@ -93,10 +107,21 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* New Arrivals Carousel */}
-      <ProductCarousel products={newArrivals} title="Just Dropped" />
+      {/* New Arrivals Carousel - Now using real data */}
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-10">Just Dropped</h2>
+          {status === 'loading' ? 
+          (<LoadingSpinner size="lg" />) : status === 'succeeded' ? 
+            (<ProductCarousel products={newArrivals} title="" /> /* Title is empty since we have it above */) : 
+            (<p className="text-center text-red-500">Error loading products.</p>)
+    
+          }
+        </div>
+      </section>
 
       {/* Instagram Feed Section */}
+      {/* ... (This section remains the same) ... */}
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">As Seen on Instagram</h2>

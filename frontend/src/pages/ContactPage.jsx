@@ -1,6 +1,8 @@
+// src/pages/ContactPage.jsx
 import React from 'react';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import Button from '../components/Button';
+import LoginForm from '../components/LoginForm'; // 1. Import the form
 
 const ContactPage = () => {
   return (
@@ -11,25 +13,16 @@ const ContactPage = () => {
         {/* Contact Form */}
         <div>
           <h2 className="text-2xl font-semibold mb-6">Send us a message</h2>
-          <form className="space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">Your Name</label>
-              <input type="text" id="name" name="name" className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-brand-yellow focus:border-brand-yellow" />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">Your Email</label>
-              <input type="email" id="email" name="email" className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-brand-yellow focus:border-brand-yellow" />
-            </div>
-            <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700">Message</label>
-              <textarea id="message" name="message" rows="5" className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md shadow-sm focus:ring-brand-yellow focus:border-brand-yellow"></textarea>
-            </div>
-            <Button variant="primary" type="submit">Send Message</Button>
-          </form>
+          {/* We can hide the original form for now to focus on testing */}
+          {/* <form className="space-y-6">...</form> */}
+
+          {/* 2. Add the LoginForm here */}
+          <LoginForm />
         </div>
 
         {/* Contact Information */}
         <div className="space-y-8">
+          {/* ... rest of the contact info remains the same ... */}
           <div>
             <h2 className="text-2xl font-semibold mb-6">Contact Information</h2>
             <div className="space-y-4">
@@ -57,7 +50,6 @@ const ContactPage = () => {
             </div>
           </div>
           
-          {/* Embedded Map Placeholder */}
           <div>
             <h3 className="text-xl font-semibold mb-4">Find Us</h3>
             <div className="w-full h-64 bg-gray-200 rounded-lg flex items-center justify-center">
